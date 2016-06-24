@@ -73,7 +73,7 @@ public class httpClient{
 		return result;
 	}
 	
-	public static String executePost() throws MalformedURLException{
+	public static String executePost(HashMap<String, String> value, List<String> keys) throws MalformedURLException{
 		String result = "";
 		HttpURLConnection cnct = null;
 		
@@ -84,6 +84,19 @@ public class httpClient{
 			cnct = (HttpURLConnection)url.openConnection();
 			cnct.setDoOutput(true);
 			cnct.setRequestMethod("POST");
+
+			BufferedWriter w = new BufferedWriter(new OutputStreamWriter(cnct.getOutputStream(), "UTF-8"));
+			String postbody = "";
+			boolean first = true;
+			for(String key : keys){
+				if(!first){
+					key += "&";
+				}
+				postbody += key + "=" URLEncoder.encode(value.get(key));
+				first = false;
+			}
+			w.write(postbody);
+			w.close();
 			
 			if(cnct.getResponseCode() == HttpURLConnection.HTTP_OK){
 				InputStreamReader isr = new InputStreamReader(cnct.getInputStream(), "UTF-8");
