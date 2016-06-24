@@ -67,7 +67,6 @@ public class httpClient{
 			}
 		}
 		if(DEBUG){
-			// あとあとログ出力で実装する
 			System.out.println(result);
 		}
 		
